@@ -1,0 +1,59 @@
+<!--
+scale: mapping from
+data attributes (domain)
+to display (range)
+
+d3.scaleLinear()
+    .domain([min, max]) // input
+    .range([min, max]); // output -->
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <svg></svg>
+  <script>
+    var city = 'New York';
+    var width = 900;
+    var height = 300;
+
+    // dataset of city temperatures across time
+    d3.tsv('data/data_temperature.tsv', (err, data) => {
+      // clean the data
+      data.forEach(d => {
+        d.date = new Date(d.date); // x
+        ++d[city]; // y | ++d converte o resultado de string para float
+      });
+
+      // get min/max
+      var min = d3.min(data, d => d[city]);
+      var max = d3.max(data, d => d[city]);
+
+      // or use extent, which gives back [min, max]
+      var extent = d3.extent(data, d => d[city]);
+
+      var yScale = d3.scaleLinear() // A tradução dos valores na escala é proporcional
+        .domain(extent) // input
+        .range([height, 0]); //output
+
+
+      var yAxis = d3.axisLeft() // Coloca os valores à esquerda do eixo
+        .scale(yScale);
+
+      d3.select('svg').append('g')
+        // Posicionar a escala de temperatura
+        .attr('transform', 'translate(50, 20)')
+        .call(yAxis);
+    });
+  </script>
+</body>

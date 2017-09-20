@@ -1,0 +1,44 @@
+<!-- http://blockbuilder.org/sxywu/bade25f3d1b1a0bbac9bf981ad0a4437 -->
+
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Wut, no rectangle elements?! -->
+  <svg></svg>
+  <script>
+    var rectWidth = 100;
+    var height = 300;
+    var data = [100, 250, 175, 200, 120];
+
+    var svg = d3.select('svg');
+
+    // So what are we even selecting?
+    // A: an empty selection
+    svg.selectAll('rect')
+      .data(data)
+
+      // .enter() create a placeholder
+      // .append('rect') take the placeholders and create an element
+      // I need to have five rectangles elements to match that data
+      .enter().append('rect')
+      .attr('x', (d, i) => i * rectWidth)
+      .attr('y', d => height - d)
+      .attr('width', rectWidth)
+      .attr('height', d => d)
+      .attr('fill', 'blue')
+      .attr('stroke', '#fff');
+
+  </script>
+</body>

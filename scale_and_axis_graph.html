@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <style>
+    body { margin:0;position:fixed;top:0;right:0;bottom:0;left:0; }
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <svg></svg>
+  <script>
+    var city = 'New York';
+    var width = 800;
+    var height = 300;
+    // Variáveis para o gráfico ficar dentro do limite do SVG
+    var margin = {top: 20, bottom: 20, left: 20, right: 20};
+
+    // dataset of city temperatures across time
+    d3.tsv('data.tsv', (err, data) => {
+      // clean the data
+      data.forEach(d => {
+        d.date = d3.timeParse("%Y%m%d")(d.date);
+        d.date = new Date(d.date); // x
+        d[city] = ++d[city]; // y
+      });
+
+      // min and max values
+      // var yExtent = d3.extent(data, d => d[city]);
+
+      // If I want my y Axis to start at zero
+      var yMax = d3.max(data, d => d[city]);
+
+      var xExtent = d3.extent(data, d => d.date);
+
+      var yScale = d3.scaleLinear()
+        .domain([0, yMax])
+        .range([height - margin.bottom, margin.top]);
+        // console.log(yScale(50)) // Vai retornar a posição no eixo y para um dado no valor 50
+
+      var heightScale = d3.scaleLinear()
+        .domain([0, yMax])
+        .range([0, height - margin.top - margin.bottom]);
+
+      var xScale = d3.scaleTime()
+        .domain(xExtent)
+        // Margin gives the right place to start drawing
+        .range([margin.left, width - margin.right]);
+
+
+      // CREATE THE RECTANGLES
+
+      // Select SVG
+      var svg = d3.select('svg');
+
+      //Select all the rectangles that don't yet exist
+      var rect = svg.selectAll('rect')
+      // Bind data to it
+        .data(data)
+        .enter().append('rect')
+        .attr('width', 2)
+        .attr('height', function(d) {
+          return heightScale(d[city]);
+        })
+        // .attr('x', d => {return xScale(d.date)}) // Simplified code
+        .attr('x', function(d) { return xScale(d.date)} )
+        .attr('y', function(d) {return yScale(d[city])})
+        .attr('fill','blue')
+        .attr('stroke', 'white');
+
+      // AXIS
+      var xAxis = d3.axisBottom()
+        // .tickFormat(d => d3.timeFormat('%b %Y')(d)) // Format date tick to show month and year | (d) => call the function
+        .tickFormat(d3.timeFormat('%b %Y')) // Same code above
+        .scale(xScale);
+
+      var yAxis = d3.axisLeft()
+        // .ticks(5) // Show only five values on yAxis
+        .scale(yScale);
+
+
+      svg.append('g')
+        // Position x axis on the bottom of the graph
+        .attr('transform', 'translate(' + [0, height - margin.bottom] + ')')
+
+        .call(xAxis);
+
+      svg.append('g')
+        .attr('transform', 'translate(' + [margin.left, 0] + ')')
+        .call(yAxis);
+        // .call() => yAxis(svg.append('g'))
+    });
+
+  </script>
+</body>

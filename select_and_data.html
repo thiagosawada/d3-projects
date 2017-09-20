@@ -1,0 +1,37 @@
+<!-- http://blockbuilder.org/sxywu/a74ec5e8696fd14a8c03b353c91ae948 -->
+<svg>
+  <!-- 5 rectangle elements -->
+  <rect />
+  <rect />
+  <rect />
+  <rect />
+  <rect />
+</svg>
+
+<script>
+  var rectWidth = 100;
+    var height = 300;
+  var data = [100, 250, 175, 200, 120]
+
+  // Select all rectangle elements that exist. It is an array of DOM elements
+  d3.selectAll('rect')
+      // "Bind" data to the selections. Each value matches an element
+      .data(data)
+
+      // --- Loop through each rectangle selection
+      // Get passed in (data, index)
+      .attr('x', (d, i) => i * rectWidth)
+      .attr('y', d => height - d)
+      .attr('width', rectWidth)
+      .attr('height', d => d)
+      // ---
+      /* Retornar
+      index: 0 data: 100
+      <rect x="0" y="200" width="100" height="100"
+
+      index: 1 data: 250
+      <rect x="100" y="50" width="100" height="250"
+      */
+      .attr('fill', 'blue')
+      .attr('stroke', '#fff');
+</script>
