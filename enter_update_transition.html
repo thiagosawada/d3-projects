@@ -1,0 +1,87 @@
+<script>
+
+  var rectWidth = 100;
+  var height = 300;
+  var data = [
+    [100, 250, 175, 200, 120],
+    [230, 120, 300, 145, 75, 250],
+    [240, 250, 100]
+  ];
+
+
+
+  var colors = d3.scaleOrdinal(d3.schemeCategory10);
+  var svg = svg.selectAll('rect');
+
+  function updateBars(data) {
+    // TRANSITIONS
+    // go from state A to state B
+    var t = d3.transition().duration(1000); // You need to declare this variable everytime
+    // .duration default = 250
+
+    // bars includes UPDATE selection
+    var bars = svg.selectAll('rect')
+      // d => d - key function: controls which data is assigned to which element
+      .data(data, d => d);
+
+    // EXIT
+    // Exit selection just remove
+    bars.exit().transition(t)
+      // Animate height down to 0 before removing
+      .attr('y', height)
+      .attr('height', 0)
+      .remove();
+
+    // ENTER
+    var enter = bars.enter().append('rect')
+      // Enter selection: chain attributes that don't depend on data
+      .attr('width', rectWidth)
+      .attr('stroke', '#fff')
+      // Same attributes set before .transition(): state A to transition from
+      .attr('y', height);
+
+    // ENTER + UPDATE
+    // .merge() - Combines 2 selections into one
+    bars = enter.merge(bars)
+      // Enter+update selection: chain attrs dependent on data
+      .attr('x', (d, i) => i * rectWidth)
+      .attr('fill', d => colors(d))
+      // I don't want do animate the two attributes above
+      .transition(t) // Everything after .transition(): state B to transition to
+      // Animate remaining <rect>'s height to their next state
+      .attr('y', d => height - d)
+      .attr('height', d => d)
+      .attr('fill', d => colors(d));
+
+  }
+
+  var index = 0;
+  setInterval(() => {
+    updateBars(data[index % 3]);
+    index += 1;
+  }, 2500);
+
+
+
+/*
+<rect>              data
+
+|| 100 exit         230 enter
+|| 250 update       120 update
+|| 175 exit         300 enter
+|| 200 exit         145 enter
+|| 120 update       75  enter
+                    250 update
+
+UPDATE selection
+2 <rect>s match the data so they'll remain on the screen.
+
+ENTER selection
+need to create 4 rects to match the data
+
+EXIT selection
+need to get rid of 3 <rect>s to match the data
+*/
+
+</script>
+

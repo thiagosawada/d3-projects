@@ -67,8 +67,8 @@
           return heightScale(d[city]);
         })
         // .attr('x', d => {return xScale(d.date)}) // Simplified code
-        .attr('x', function(d) { return xScale(d.date)} )
-        .attr('y', function(d) {return yScale(d[city])})
+        .attr('x', function(d) { return xScale(d.date) })
+        .attr('y', function(d) { return yScale(d[city]) })
         .attr('fill','blue')
         .attr('stroke', 'white');
 
@@ -82,11 +82,9 @@
         // .ticks(5) // Show only five values on yAxis
         .scale(yScale);
 
-
       svg.append('g')
         // Position x axis on the bottom of the graph
         .attr('transform', 'translate(' + [0, height - margin.bottom] + ')')
-
         .call(xAxis);
 
       svg.append('g')
