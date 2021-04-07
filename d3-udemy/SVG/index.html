@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SVG Examples</title>
+</head>
+<body>
+  <svg width="500" height="500">
+    <!-- Rectangle -->
+    <rect
+      width="100" height="100"
+      fill="#F44336" stroke="#8BC34A"
+      stroke-width="10" x="5" y="5">
+    </rect>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- stroke-width and position: since five pixels are going to be appearing outside of the circle on all sides, then we need to update the cx and cy attributes -->
+    <circle
+      r="100" cx="105" cy="105"
+      fill="#9C27B0" stroke="#E91E83"
+      stroke-width="10">
+    </circle>
+  </svg>
+
+  <svg width="500" height="500">
+    <ellipse
+      rx="200" ry="100"
+      cx="205" cy="105" fill="#2196F3"
+      stroke="#000" stroke-width="10">
+    </ellipse>
+  </svg>
+
+  <svg width="500" height="500">
+    <line
+      x1="25" y1="25"
+      x2="200" y2="200"
+      stroke-width="10" stroke="red">
+    </line>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Polygons & Polylines -->
+    <polygon
+      points="220,10 123,234 300,210 170,250"
+      fill="#607D8B" stroke="#000" stroke-width="10">
+    </polygon>
+  </svg>
+
+  <svg width="500" height="500">
+    <polyline
+      points="220,10 123,234 300,210 170,250"
+      stroke="#000" stroke-width="10" fill="none">
+    </polyline>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Paths -->
+    <!--
+      Absolute commands
+      M = Move to
+      L = Line (draw a line to a certain coordinate)
+      Z = Close de path
+      Q = Quadratic curve
+      Relative commands
+      m l q
+    -->
+    <path
+      d="
+        M 100, 100
+        L 300, 150
+        L 300, 300
+        Q 200, 400 100, 200
+      "
+      fill="none" stroke="#000"
+      stroke-width="10">
+    </path>
+
+    <path
+      d="
+        M 150, 200
+        L 30, 30
+        L 10, 200
+        Z
+      "
+      fill="none" stroke="blue"
+      stroke-width="10">
+    </path>
+
+    <path
+      d="
+        m 100, 100
+        l 300, 150
+        l 300, 300
+        q 200, 400 100, 200
+      "
+      fill="none" stroke="yellow"
+      stroke-width="10">
+    </path>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Quadratic Bezier Curve Visualization -->
+    <circle r="15" fill="none" stroke-width="5"
+            stroke="red" cx="300" cy="300"></circle>
+    <circle r="15" fill="none" stroke-width="5"
+            stroke="red" cx="200" cy="400"></circle>
+    <circle r="15" fill="none" stroke-width="5"
+            stroke="red" cx="100" cy="200"></circle>
+
+    <line x1="300" y1="300" x2="200" y2="400"
+          stroke-width="5" stroke="blue"></line>
+    <line x1="200" y1="400" x2="100" y2="200"
+          stroke-width="5" stroke="blue"></line>
+    <line x1="300" y1="300" x2="100" y2="200"
+          stroke-width="5" stroke="green"></line>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Text -->
+    <!-- You have to add xlink since you're inside a SVG element -->
+    <a xlink:href="https://google.com/" target="_blank">
+      <text x="50" y="50" fill="red" font-size="30">
+        Hello World!
+        <tspan x="200" y="200">Second Line!</tspan>
+      </text>
+    </a>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Definitions, Groups, Markers -->
+    <!-- The shapes defined in the definition element need an id -->
+    <!-- Definitions are reusable -->
+    <defs>
+      <g id="rectangle">
+        <rect width="50" height="50"></rect>
+        <rect width="50" height="50" x="50" fill="blue"></rect>
+      </g>
+    </defs>
+
+    <!-- Get the element from the definition -->
+    <use xlink:href="#rectangle" x="50"></use>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Text Paths -->
+    <defs>
+      <path id="custom_text_path"
+            d="M0,0 Q0,100 150,100"></path>
+    </defs>
+    <text x="10" y="100" stroke="#00" font-size="30">
+      <textPath xlink:href="#custom_text_path">
+          Hello World!
+      </textPath>
+    </text>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Clip Paths -->
+    <!-- Clipping a shape means hidding certain portions of it. You set up a path and anything inside it will be shown -->
+    <defs>
+      <clipPath id="custom_clip_path">
+        <rect x="250" y="250" width="200" height="200"></rect>
+        <circle r="50" cx="200" cy="200"></circle>
+      </clipPath>
+    </defs>
+    <circle cx="250" cy="250" clip-path="url(#custom_clip_path)"
+            r="200" fill="blue"></circle>
+  </svg>
+
+  <svg width="500" height="500">
+    <!-- Clip Path Visualization -->
+    <rect x="250" y="250" width="200" height="200"
+          fill="none" stroke="green" stroke-width="5"></rect>
+    <circle cx="250" cy="250" stroke="red" stroke-width="5"
+            r="200" fill="none"></circle>
+    <circle r="50" cx="200" cy="200"
+            fill="none" stroke="green" stroke-width="5"></circle>
+
+  </svg>
+</body>
+</html>
